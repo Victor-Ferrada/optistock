@@ -1,0 +1,137 @@
+{% extends "inventario/base.html" %}
+
+{% block title %}Lista de Productos{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Estilos específicos para los campos de filtro */
+    .card-body input,
+    .card-body select {
+        border: 2px solid #495057;
+        border-radius: 4px;
+        padding: 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Estilo para el focus de los campos */
+    .card-body input:focus,
+    .card-body select:focus {
+        border-color: #212529;
+        box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.25);
+        outline: none;
+    }
+
+    /* Contenedor para mantener consistencia en el ancho */
+    .card-body .form-group {
+        margin-bottom: 1rem;
+        max-width: 100%;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-store"></i> Lista de Productos
+            </h2>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="full-width divider-menu-h"></div>
+
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filtros de búsqueda</h5>
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="categoria" class="form-label">Filtrar por Categoría:</label>
+                                <select name="categoria" id="categoria" class="form-select">
+                                    <option value="" {% if not request.GET.categoria %}selected{% endif %}>Todas las categorías</option>
+                                    <option value="Madera" {% if request.GET.categoria == 'Madera' %}selected{% endif %}>Madera</option>
+                                    <option value="Planchas" {% if request.GET.categoria == 'Planchas' %}selected{% endif %}>Planchas</option>
+                                    <option value="Otros" {% if request.GET.categoria == 'Otros' %}selected{% endif %}>Otros</option>
+                                    <option value="Especial" {% if request.GET.categoria == 'Especial' %}selected{% endif %}>Especial</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Buscar por Nombre:</label>
+                                <input type="text" 
+                                       name="nombre" 
+                                       id="nombre" 
+                                       class="form-control" 
+                                       placeholder="Ingrese el nombre del producto"
+                                       value="{{ request.GET.nombre }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cepillado" class="form-label">Estado de Cepillado:</label>
+                                <select name="cepillado" id="cepillado" class="form-select">
+                                    <option value="" {% if not request.GET.cepillado %}selected{% endif %}>Todos los estados</option>
+                                    <option value="true" {% if request.GET.cepillado == 'true' %}selected{% endif %}>Cepillado</option>
+                                    <option value="false" {% if request.GET.cepillado == 'false' %}selected{% endif %}>Sin Cepillar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="zmdi zmdi-search me-2"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Productos -->
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="table-responsive">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+                            <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>Precio</th>
+                            <th>Largo (m)</th>
+                            <th>Ancho (m)</th>
+                            <th>Alto (m)</th>
+                            <th>¿Cepillado?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.nombre }}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td>{{ producto.largo|floatformat:2 }}</td>
+                            <td>{{ producto.ancho|floatformat:2 }}</td>
+                            <td>{{ producto.alto|floatformat:2 }}</td>
+                            <td>{{ producto.cepillado|yesno:"Sí,No" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center">No hay productos disponibles</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

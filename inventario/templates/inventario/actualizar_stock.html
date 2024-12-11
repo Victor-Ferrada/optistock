@@ -1,0 +1,103 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+
+{% block title %}Actualizar Stock{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-archive me-2"></i>Actualizar Stock
+            </h2>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="full-width divider-menu-h"></div>
+
+    <!-- Detalles del Producto y Formulario -->
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-card mdl-shadow--2dp full-width">
+                <div class="mdl-card__supporting-text">
+                    <div class="row">
+                        <!-- Columna de detalles -->
+                        <div class="col-md-6">
+                            <h3 class="mdl-card__title-text mb-3">Detalles del Producto</h3>
+                            <div class="table-responsive">
+                                <table class="mdl-data-table mdl-js-data-table full-width">
+                                    <tbody>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Nombre:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{ producto.nombre }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Código:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{ producto.codigo }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Precio:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">${{ producto.precio }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Stock actual:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{ producto.stock }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Categoría:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{ producto.categoria }}</td>
+                                        </tr>
+                                        {% if producto.largo %}
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Largo:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{ producto.largo }} cm</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% if producto.ancho %}
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Ancho:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{ producto.ancho }} cm</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% if producto.alto %}
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Alto:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{ producto.alto }} cm</td>
+                                        </tr>
+                                        {% endif %}
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Cepillado:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{% if producto.cepillado %}Sí{% else %}No{% endif %}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric"><strong>Especial:</strong></td>
+                                            <td class="mdl-data-table__cell--non-numeric">{% if producto.especial %}Sí{% else %}No{% endif %}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Columna del formulario -->
+                        <div class="col-md-6">
+                            <h3 class="mdl-card__title-text mb-3">Actualizar Stock</h3>
+                            <form method="POST" class="form-container">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <input type="hidden" name="producto_id" value="{{ producto.id }}">
+                                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <i class="zmdi zmdi-check me-2"></i>Actualizar
+                                </button>
+                                <a href="{% url 'inventario:seleccionar-producto-actualizar' %}" class="mdl-button mdl-js-button mdl-button--raised">
+                                    <i class="zmdi zmdi-arrow-back me-2"></i>Volver
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

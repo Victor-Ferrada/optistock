@@ -1,0 +1,83 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+
+{% block title %}Seleccionar Producto para Cepillar{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-wrench"></i> </i> Seleccionar Producto para Cepillar
+            </h2>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filtros de búsqueda</h5>
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label ">Buscar por Nombre:</label>
+                            <input type="text" 
+                                   name="nombre" 
+                                   id="nombre" 
+                                   class="form-control border border-secondary" 
+                                   placeholder="Ingrese el nombre del producto"
+                                   value="{{ request.GET.nombre }}">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="zmdi zmdi-search me-2"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Productos -->
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Stock</th>
+                            <th>¿Cepillado?</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>{{ producto.cepillado|yesno:"Sí,No" }}</td>
+                            <td>
+                                <a href="{% url 'inventario:registrar_proceso_cepillado' producto.id %}" 
+                                   class="btn btn-success">
+                                    Cepillar
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No hay productos disponibles para cepillar.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

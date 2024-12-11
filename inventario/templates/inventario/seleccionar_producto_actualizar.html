@@ -1,0 +1,108 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+
+{% block title %}Seleccionar Producto para Actualizar Stock{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-refresh"></i></i>Seleccionar Producto para Actualizar Stock
+            </h2>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="full-width divider-menu-h"></div>
+
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filtros de búsqueda</h5>
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="categoria" class="form-label">Filtrar por Categoría:</label>
+                                <select name="categoria" id="categoria" class="form-select border border-secondary">
+                                    <option value="" {% if not request.GET.categoria %}selected{% endif %}>Todas las categorías</option>
+                                    <option value="Madera" {% if request.GET.categoria == 'Madera' %}selected{% endif %}>Madera</option>
+                                    <option value="Planchas" {% if request.GET.categoria == 'Planchas' %}selected{% endif %}>Planchas</option>
+                                    <option value="Otros" {% if request.GET.categoria == 'Otros' %}selected{% endif %}>Otros</option>
+                                    <option value="Especial" {% if request.GET.categoria == 'Especial' %}selected{% endif %}>Especial</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Buscar por Nombre:</label>
+                                <input type="text" 
+                                       name="nombre" 
+                                       id="nombre" 
+                                       class="form-control border border-secondary"
+                                       placeholder="Ingrese el nombre del producto"
+                                       value="{{ request.GET.nombre }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cepillado" class="form-label ">Estado de Cepillado:</label>
+                                <select name="cepillado" id="cepillado" class="form-select border border-secondary">
+                                    <option value="" {% if not request.GET.cepillado %}selected{% endif %}>Todos los estados</option>
+                                    <option value="true" {% if request.GET.cepillado == 'true' %}selected{% endif %}>Cepillado</option>
+                                    <option value="false" {% if request.GET.cepillado == 'false' %}selected{% endif %}>Sin Cepillar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="zmdi zmdi-search me-2"></i>Aplicar Filtros
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Productos -->
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="table-responsive">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+                            <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>¿Cepillado?</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">{{ producto.nombre }}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td>{{ producto.stock }}</td>
+                            <td>{{ producto.cepillado|yesno:"Sí,No" }}</td>
+                            <td>
+                                <a href="{% url 'inventario:actualizar_stock' producto.id %}" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                    <i class="zmdi zmdi-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No hay productos disponibles</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-alert-circle me-2"></i>Alertas de Stock
+            </h2>
+        </div>
+    </div>
+
+    <!-- Alertas de estado -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="mdl-card mdl-shadow--2dp full-width">
+                <div class="mdl-card__supporting-text">
+                    <div class="alert alert-info">
+                        <i class="zmdi zmdi-calendar me-2"></i>
+                        Estación actual: {{ estacion_actual }}
+                    </div>
+                    
+                    {% if total_alertas > 0 %}
+                        <div class="alert alert-warning">
+                            <i class="zmdi zmdi-alert-triangle me-2"></i>
+                            Tienes {{ total_alertas }} producto(s) con stock bajo
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            <i class="zmdi zmdi-check-circle me-2"></i>
+                            Todos los productos tienen stock suficiente
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="full-width divider-menu-h"></div>
+
+    <!-- Tabla de Productos -->
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="table-responsive">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Producto</th>
+                            <th class="mdl-data-table__cell--non-numeric">Categoría</th>
+                            <th>Stock Actual</th>
+                            <th>Umbral Actual</th>
+                            <th>Umbral Invierno</th>
+                            <th>Umbral Verano</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in productos_bajo_stock %}
+                        <tr {% if item.stock_actual <= 2 %}class="danger-row"{% elif item.stock_actual <= 5 %}class="warning-row"{% endif %}>
+                            <td class="mdl-data-table__cell--non-numeric">{{ item.producto.nombre }}</td>
+                            <td class="mdl-data-table__cell--non-numeric">{{ item.producto.categoria }}</td>
+                            <td>{{ item.stock_actual }}</td>
+                            <td>{{ item.umbral }}</td>
+                            <td>{{ item.umbral_invierno }}</td>
+                            <td>{{ item.umbral_verano }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="mdl-data-table__cell--non-numeric">No hay productos con stock bajo</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.danger-row {
+    background-color: #ffebee !important;
+}
+.warning-row {
+    background-color: #fff3e0 !important;
+}
+.mdl-data-table {
+    border: none !important;
+    white-space: normal !important;
+}
+.mdl-data-table td {
+    padding: 12px 18px !important;
+}
+.mdl-data-table th {
+    padding: 12px 18px !important;
+    background-color: #f5f5f5;
+}
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.alert-info {
+    background-color: #e3f2fd;
+    border-color: #bbdefb;
+    color: #0d47a1;
+}
+.alert-warning {
+    background-color: #fff3e0;
+    border-color: #ffe0b2;
+    color: #e65100;
+}
+.alert-success {
+    background-color: #e8f5e9;
+    border-color: #c8e6c9;
+    color: #1b5e20;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "inventario/base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-settings me-2"></i>Configurar Umbrales de Stock
+            </h2>
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Umbral Invierno Actual</th>
+                                        <th>Umbral Verano Actual</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for form in formset %}
+                                    <tr>
+                                        <td>{{ form.instance.nombre }}</td>
+                                        <td>
+                                            {{ form.umbral_stock_invierno }}
+                                            {% if form.umbral_stock_invierno.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ form.umbral_stock_invierno.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ form.umbral_stock_verano }}
+                                            {% if form.umbral_stock_verano.errors %}
+                                                <div class="invalid-feedback">
+                                                    {{ form.umbral_stock_verano.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save me-2"></i>Guardar Umbrales
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

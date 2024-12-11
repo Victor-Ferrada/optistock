@@ -1,0 +1,23 @@
+{% extends "inventario/base.html" %}
+
+{% block title %}Registrar Producto{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-wrench"></i></i></i> Registrar Producto
+            </h2>
+        </div>
+    </div>
+<p>Producto: {{ producto.nombre }}</p>
+<p>Stock Actual: {{ producto.stock }}</p>
+<form method="POST">
+    {% csrf_token %}
+    <p>¿Cuántas unidades desea cepillar?</p>
+    <input type="number" name="cantidad" min="1" max="{{ producto.stock }}" required class="form-control border border-secondary">
+    <button type="submit" class="btn btn-primary mt-3">Registrar Cepillado</button>
+</form>
+<a href="{% url 'inventario:selectar_producto_para_cepillar' %}" class="btn btn-secondary mt-3">Volver a la lista</a>
+{% endblock %}

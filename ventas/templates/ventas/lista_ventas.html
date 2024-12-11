@@ -1,0 +1,55 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+
+{% block title %}Lista de Ventas{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4 text-primary">
+                <i class="zmdi zmdi-assignment me-2"></i>Lista de Ventas
+            </h2>
+        </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="full-width divider-menu-h"></div>
+
+    <!-- Tabla de Ventas -->
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <div class="table-responsive">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">ID</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for venta in ventas %}
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">{{ venta.id_mov }}</td>
+                            <td>{{ venta.fecha }}</td>
+                            <td>${{ venta.total|floatformat:2 }}</td>
+                            <td>
+                                <a href="{% url 'ventas:detalle_venta' venta.id_mov %}" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                    <i class="zmdi zmdi-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No hay ventas registradas</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
