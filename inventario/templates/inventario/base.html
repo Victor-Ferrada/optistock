@@ -89,16 +89,6 @@
                         </a>
                     </li>
                     <li class="full-width">
-                        <a href="{% url 'inventario:seleccionar-producto-actualizar' %}" class="full-width">
-                            <div class="navLateral-body-cl">
-                                <i class="zmdi zmdi-refresh"></i>
-                            </div>
-                            <div class="navLateral-body-cr">
-                                Actualizar Stock
-                            </div>
-                        </a>
-                    </li>
-                    <li class="full-width">
                         <a href="{% url 'ventas:lista_ventas' %}" class="full-width">
                             <div class="navLateral-body-cl">
                                 <i class="zmdi zmdi-assignment"></i>
@@ -115,6 +105,26 @@
                             </div>
                             <div class="navLateral-body-cr">
                                 Editar Umbrales Stock
+                            </div>
+                        </a>
+                    </li>
+                    <li class="full-width">
+                        <a href="{% url 'compras:registrar_compra' %}" class="full-width">
+                            <div class="navLateral-body-cl">
+                                <i class="zmdi zmdi-shopping-cart"></i>
+                            </div>
+                            <div class="navLateral-body-cr">
+                                Registrar Compra
+                            </div>
+                        </a>
+                    </li>
+                    <li class="full-width">
+                        <a href="{% url 'compras:lista_compras' %}" class="full-width">
+                            <div class="navLateral-body-cl">
+                                <i class="zmdi zmdi-assignment"></i>
+                            </div>
+                            <div class="navLateral-body-cr">
+                                Lista de Compras
                             </div>
                         </a>
                     </li>
