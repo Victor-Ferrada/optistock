@@ -9,10 +9,11 @@ pip install -r requirements.txt
 mkdir -p staticfiles
 mkdir -p media
 
-# Recolectar archivos estáticos
-python manage.py collectstatic --no-input --clear
+# Limpiar archivos estáticos existentes
+python manage.py collectstatic --clear --noinput
 
-# Crear base de datos si no existe
-if [ ! -f db.sqlite3 ]; then
-    python manage.py migrate
-fi 
+# Recolectar archivos estáticos sin procesar mapas de CSS
+WHITENOISE_KEEP_ONLY_HASHED_FILES=True python manage.py collectstatic --noinput
+
+# Ejecutar migraciones
+python manage.py migrate 
