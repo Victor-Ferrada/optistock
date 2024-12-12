@@ -9,13 +9,10 @@ pip install -r requirements.txt
 mkdir -p staticfiles
 mkdir -p media
 
-# Copiar la base de datos SQLite si existe en el directorio de construcción
-if [ -f db.sqlite3 ]; then
-    cp db.sqlite3 $RENDER_RUNTIME_DIR/
-fi
-
 # Recolectar archivos estáticos
 python manage.py collectstatic --no-input --clear
 
-# Ejecutar migraciones
-python manage.py migrate 
+# Crear base de datos si no existe
+if [ ! -f db.sqlite3 ]; then
+    python manage.py migrate
+fi 
