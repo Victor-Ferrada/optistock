@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import dj_database_url
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -81,7 +80,7 @@ WSGI_APPLICATION = 'OptiStock_IA.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(os.getenv('RENDER_RUNTIME_DIR', BASE_DIR), 'db.sqlite3'),
+        'NAME': os.path.join(os.getenv('RENDER_RUNTIME_DIR', str(BASE_DIR)), 'db.sqlite3'),
     }
 }
 
