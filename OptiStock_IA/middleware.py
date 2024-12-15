@@ -7,9 +7,18 @@ class LoginRequiredMiddleware:
 
     def __call__(self, request):
         # URLs que no requieren autenticación
-        public_urls = ['/usuario/login/']
+        public_urls = [
+            '/usuario/login/',
+            '/static/',
+            '/media/',
+            '/admin/login/',
+            '/admin/'
+        ]
         
-        if not request.user.is_authenticated and request.path not in public_urls:
+        # Verificar si la URL actual está en las URLs públicas
+        is_public_url = any(request.path.startswith(url) for url in public_urls)
+        
+        if not request.user.is_authenticated and not is_public_url:
             messages.error(request, 'Es necesario iniciar sesión para acceder a esta página.')
             return redirect('usuario:login')
             
